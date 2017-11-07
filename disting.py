@@ -8,7 +8,6 @@ print("████████████████████████�
 
 
 def makeAudioPlaylist():
-    cardPath = easygui.diropenbox()
     filelist = []
     settings = {
         "loop": 0,
@@ -21,12 +20,15 @@ def makeAudioPlaylist():
         "triggers": 0,
         "clocks": 4
     }
-    
-    print("\nGenerating Audio playlist...\n")
-    print("")
-    # sub_category = input("Enter number to generate algorithm-specific playlist:")
 
-    with open(cardPath + "/playlist.txt", "a") as f:
+    print("\nGenerating Audio playlist...\n")
+    # sub_category = input("Enter number to generate algorithm-specific playlist:")
+    cardPath = easygui.diropenbox()
+
+    playlist_filename = "playlist.txt"
+
+
+    with open(os.path.join(cardPath, playlist_filename), "a") as f:
         f.write("disting playlist v1")
         for filename in os.listdir(cardPath):
             if ".wav" in filename:
@@ -38,7 +40,6 @@ def makeAudioPlaylist():
 
 
 def makeMidiPlaylist():
-    cardPath = easygui.diropenbox()
     filelist = []
     settings = {
         "loop": 0,
@@ -51,8 +52,11 @@ def makeMidiPlaylist():
     }
 
     print("\nGenerating MIDI playlist...\n")
+    cardPath = easygui.diropenbox()
 
-    with open(cardPath + "/midi-playlist.txt", "a") as f:
+    playlist_filename = "midi-playlist.txt"
+
+    with open(os.path.join(cardPath, playlist_filename), "a") as f:
         f.write("disting playlist v1")
         for filename in os.listdir(cardPath):
             if ".mid" in filename:
@@ -64,7 +68,6 @@ def makeMidiPlaylist():
 
 def makeWaveTablePlaylist():
     filelist = []
-    subfolders = []
     settings = {
         "wavelength": 600
     }
@@ -76,8 +79,10 @@ def makeWaveTablePlaylist():
         addFolders = True
     else:
         addFolders = False
-
-    with open(cardPath + "/playlist-wavetable.txt", "a") as f:
+    
+    playlist_filename = "midi-playlist.txt"
+    
+    with open(os.path.join(cardPath, playlist_filename), "a") as f:
         f.write("disting playlist v1")
         for filename in os.listdir(cardPath):
             if ".wav" in filename and ".txt" not in filename:
@@ -88,15 +93,14 @@ def makeWaveTablePlaylist():
         if addFolders:
             for folder in os.listdir(cardPath):
                 if "." not in folder and ".txt" not in folder:
-                    folder_path = cardPath + "/" + folder
+                    folder_path = os.path.join(cardPath, folder)
                     f.write("\n\n" + folder)
-                    with open(folder_path + "/playlist.txt", "a") as w:
+                    with open(os.path.join(folder_path, "playlist.txt"), "a") as w:
                         w.write("disting playlist v1\n")
                         for filename in os.listdir(folder_path):
                             if ".wav" in filename and ".txt" not in filename:
                                 filelist.append(filename)
                                 w.write("\n" + filename)
-        checkNumberOfFiles(filelist, 64)
 
 
 def checkNumberOfFiles(x, max):
