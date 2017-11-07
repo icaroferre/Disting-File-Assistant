@@ -21,8 +21,10 @@ def makeAudioPlaylist():
         "triggers": 0,
         "clocks": 4
     }
-
+    
     print("\nGenerating Audio playlist...\n")
+    print("")
+    # sub_category = input("Enter number to generate algorithm-specific playlist:")
 
     with open(cardPath + "/playlist.txt", "a") as f:
         f.write("disting playlist v1")
@@ -115,6 +117,7 @@ def operations():
     else:
         print("Invalid operation. \n")
         operations()
+    print("\nOperation was successful.")
 
 
 if __name__ == "__main__":
