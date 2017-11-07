@@ -1,7 +1,7 @@
 # Disting File Assistant
 
 The Disting File Assistant is a Python script for generating additional files (playlists) for the Expert Sleepers MK3 / MK4 modules.
-It can generate audio, MIDI and wavetable playlists.
+Currently it can generate audio, MIDI and wavetable playlists.
 
 
 ## Requirements
