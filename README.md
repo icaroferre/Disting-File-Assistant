@@ -17,7 +17,7 @@ Download or clone the repo, open the terminal and enter the following command to
 
 ``` python3 /path/to/folder/disting.py ```
 
-The script will then ask you to select an operation and will prompt you to select the path to your MicroSD card.
+The script will then ask you to select an operation and will prompt you to select the path to your MicroSD card.  
 All relevant files (.wav for Audio / Wavetable and .mid for MIDI) will be added the playlist. The script will also add all available settings below each filename in the playlist file.
 
 Ícaro Ferre  
