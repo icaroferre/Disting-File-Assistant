@@ -5,8 +5,11 @@ Currently it can generate audio, MIDI and wavetable playlists.
 
 
 ## Requirements
-	- Python 3
-	- [EasyGUI library](http://easygui.sourceforge.net)
+
+- Python 3
+- [EasyGUI library](http://easygui.sourceforge.net)
+
+	
 	
 ## How to Use
 
