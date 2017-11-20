@@ -1,0 +1,2 @@
+add-all-settings=0
+add-global-settings=1

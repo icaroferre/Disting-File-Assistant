@@ -1,16 +1,42 @@
 import easygui
 import os
+import os.path
+import sys
 
 print("\n██████████████████████████████")
 print("  ES Disting File Assistant  ")
 print("       by Icaro Ferre")
 print("██████████████████████████████\n")
 
+scriptSettings = {
+    "add-all-settings": 1,
+    "add-global-settings": 0
+}
+
+
+def loadSettingsFile():
+    global scriptSettings
+    try:
+        with open(sys.path[0] + "/settings.txt", "r") as f:
+            for line in f:
+                newline = line.rstrip()
+                newline = newline.split("=")
+                if newline[0] in scriptSettings:
+                        scriptSettings[newline[0]] = int(newline[1])
+        print(str(scriptSettings))
+    except FileNotFoundError:
+        print("Settings file not found.")
+
+
+def eraseExistingFile(path):
+    if os.path.isfile(path):
+        open(path, "w").close()
+
 
 def makeAudioPlaylist():
     filelist = []
     settings = {
-        "loop": 0,
+        "loop": 1,
         "fadeOut": 3,
         "fadeIn": 3,
         "gap": 3,
@@ -18,24 +44,39 @@ def makeAudioPlaylist():
         "fixedPitch": 0,
         "ramp": 0,
         "triggers": 0,
-        "clocks": 4
+        "clocks": 16
     }
 
     print("\nGenerating Audio playlist...\n")
-    # sub_category = input("Enter number to generate algorithm-specific playlist:")
+    sub_category = input("Enter suffix for algorithm-specific playlist (press enter for general audio): ")
     cardPath = easygui.diropenbox()
 
-    playlist_filename = "playlist.txt"
-
-
-    with open(os.path.join(cardPath, playlist_filename), "a") as f:
-        f.write("disting playlist v1")
+    if sub_category == "":
+        playlist_filename = "playlist.txt"
         for filename in os.listdir(cardPath):
             if ".wav" in filename:
                 filelist.append(filename)
+    else:
+        playlist_filename = "playlist-" + sub_category + ".txt"
+        for filename in os.listdir(cardPath):
+            if ".wav" in filename and sub_category + "_" in filename and "." + sub_category not in filename:
+                filelist.append(filename)
+
+    eraseExistingFile(os.path.join(cardPath, playlist_filename))
+
+    with open(os.path.join(cardPath, playlist_filename), "a") as f:
+        f.write("disting playlist v1")
+
+        if scriptSettings["add-global-settings"] == 1:
+            f.write("\n")
+            for s in sorted(settings):
+                f.write("\n-" + s + "=" + str(settings[s]))
+
+        for filename in sorted(filelist):
                 f.write("\n\n" + filename)
-                for s in sorted(settings):
-                    f.write("\n-" + s + "=" + str(settings[s]))
+                if scriptSettings["add-all-settings"] == 1:
+                    for s in sorted(settings):
+                        f.write("\n-" + s + "=" + str(settings[s]))
         checkNumberOfFiles(filelist, 64)
 
 
@@ -56,14 +97,23 @@ def makeMidiPlaylist():
 
     playlist_filename = "midi-playlist.txt"
 
+    eraseExistingFile(os.path.join(cardPath, playlist_filename))
+
     with open(os.path.join(cardPath, playlist_filename), "a") as f:
         f.write("disting playlist v1")
+
+        if scriptSettings["add-global-settings"] == 1:
+            f.write("\n")
+            for s in sorted(settings):
+                f.write("\n-" + s + "=" + str(settings[s]))
+
         for filename in os.listdir(cardPath):
             if ".mid" in filename:
                 filelist.append(filename)
                 f.write("\n\n" + filename)
-                for s in sorted(settings):
-                    f.write("\n-" + s + "=" + str(settings[s]))
+                if scriptSettings["add-all-settings"] == 1:
+                    for s in sorted(settings):
+                        f.write("\n-" + s + "=" + str(settings[s]))
 
 
 def makeWaveTablePlaylist():
@@ -79,11 +129,19 @@ def makeWaveTablePlaylist():
         addFolders = True
     else:
         addFolders = False
-    
-    playlist_filename = "midi-playlist.txt"
+
+    playlist_filename = "playlist-wavetable.txt"
+
+    eraseExistingFile(os.path.join(cardPath, playlist_filename))
     
     with open(os.path.join(cardPath, playlist_filename), "a") as f:
         f.write("disting playlist v1")
+
+        if scriptSettings["add-global-settings"] == 1:
+            f.write("\n")
+            for s in sorted(settings):
+                f.write("\n-" + s + "=" + str(settings[s]))
+        
         for filename in os.listdir(cardPath):
             if ".wav" in filename and ".txt" not in filename:
                 filelist.append(filename)
@@ -125,4 +183,5 @@ def operations():
 
 
 if __name__ == "__main__":
+    loadSettingsFile()
     operations()
