@@ -23,7 +23,6 @@ def loadSettingsFile():
                 newline = newline.split("=")
                 if newline[0] in scriptSettings:
                         scriptSettings[newline[0]] = int(newline[1])
-        print(str(scriptSettings))
     except FileNotFoundError:
         print("Settings file not found.")
 
