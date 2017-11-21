@@ -23,6 +23,25 @@ All relevant files (.wav for Audio / Wavetable and .mid for MIDI) will be added 
 
 ----
 
+## Algorithm-specific playlists
+
+When generating an audio playlist, the script will ask if you'd like to generate a algorithm-specific playlist.
+If so, type the code for the algorithm that you'd like to generate a playlist for (or press enter to generate a generic audio playlist).
+
+Here's a list of valid algorithm codes:
+
+- I1 (Audio Playback): ```rm```
+- I2 (Clocked Audio Playback): ```clocked```
+- I-3 (Audio Playback with V/Oct):  ```voct```
+- I-4 (Audio Playback with Z Speed): ```zspeed```
+- J-4 (Audio Playback with End CV): ```endcv```
+
+When generating a algorithm-specific playlist, the script will only include files that contain the algorithm code at the beggining of their filename followed by an underscore character.  
+For example, if you enter the ```rm``` code, the script will only include files that start with ```rm_```.  
+
+
+----
+
 ## settings.txt
 
 The settings.txt lets you change certain settings for the script:
