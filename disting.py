@@ -17,10 +17,16 @@ scriptSettings = {
 def loadSettingsFile():
     global scriptSettings
     try:
+        # load the settings.txt file
         with open(sys.path[0] + "/settings.txt", "r") as f:
+            # for each line
             for line in f:
+
+                # split at =
                 newline = line.rstrip()
                 newline = newline.split("=")
+
+                # replace value into the scriptSettings dict
                 if newline[0] in scriptSettings:
                         scriptSettings[newline[0]] = int(newline[1])
     except FileNotFoundError:
@@ -28,12 +34,15 @@ def loadSettingsFile():
 
 
 def eraseExistingFile(path):
+    # if file exits @ path, erase it's content
     if os.path.isfile(path):
         open(path, "w").close()
 
 
 def makeAudioPlaylist():
     filelist = []
+
+    # preset settings for the playlist
     settings = {
         "loop": 1,
         "fadeOut": 3,
@@ -48,8 +57,12 @@ def makeAudioPlaylist():
 
     print("\nGenerating Audio playlist...\n")
     sub_category = input("Enter suffix for algorithm-specific playlist (press enter for general audio): ")
+    
+    # open the easygui file picker
     cardPath = easygui.diropenbox()
 
+    # get file list for the path
+    # if a sub_category is used, append it to the playlist filename
     if sub_category == "":
         playlist_filename = "playlist.txt"
         for filename in os.listdir(cardPath):
@@ -63,27 +76,30 @@ def makeAudioPlaylist():
 
     eraseExistingFile(os.path.join(cardPath, playlist_filename))
 
+    # generate file
     with open(os.path.join(cardPath, playlist_filename), "a") as f:
+        # add header
         f.write("disting playlist v1")
-
+        # add global settings if enabled
         if scriptSettings["add-global-settings"] == 1:
             f.write("\n")
             for s in sorted(settings):
                 f.write("\n-" + s + "=" + str(settings[s]))
-
+        # for each file, add all settings if enabled
         for filename in sorted(filelist):
                 f.write("\n\n" + filename)
                 if scriptSettings["add-all-settings"] == 1:
                     for s in sorted(settings):
                         f.write("\n-" + s + "=" + str(settings[s]))
+        # check for file limit
         checkNumberOfFiles(filelist, 64)
 
 
 def makeMidiPlaylist():
     filelist = []
     settings = {
-        "loop": 0,
-        "zeroVNote": 48,
+        "loop": 1,
+        "zeroVNote": 60,
         "bendRange": 2,
         "cc1offset": 0,
         "cc1scale": 5,
@@ -106,7 +122,7 @@ def makeMidiPlaylist():
             for s in sorted(settings):
                 f.write("\n-" + s + "=" + str(settings[s]))
 
-        for filename in os.listdir(cardPath):
+        for filename in sorted(os.listdir(cardPath)):
             if ".mid" in filename:
                 filelist.append(filename)
                 f.write("\n\n" + filename)
@@ -121,13 +137,15 @@ def makeWaveTablePlaylist():
         "wavelength": 600
     }
     print("\nGenerating Wavetable playlist...\n")
+    
+    #check if you'd like to run the script on subfolders
     addFolders = input("Add folders to playlist? [y/n]: ")
-    cardPath = easygui.diropenbox()
-
     if addFolders == "y":
         addFolders = True
     else:
         addFolders = False
+
+    cardPath = easygui.diropenbox()
 
     playlist_filename = "playlist-wavetable.txt"
 
@@ -147,6 +165,7 @@ def makeWaveTablePlaylist():
                 f.write("\n\n" + filename)
                 for s in sorted(settings):
                     f.write("\n-" + s + "=" + str(settings[s]))
+        # add playlist file to sub folders
         if addFolders:
             for folder in os.listdir(cardPath):
                 if "." not in folder and ".txt" not in folder:
@@ -167,6 +186,7 @@ def checkNumberOfFiles(x, max):
 
 
 def operations():
+    # ask for operation
     print("Available operations: audio, midi, wavetable")
     operation = input("Enter operation: ")
     if operation == "audio":
