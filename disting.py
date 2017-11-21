@@ -57,7 +57,7 @@ def makeAudioPlaylist():
 
     print("\nGenerating Audio playlist...\n")
     sub_category = input("Enter suffix for algorithm-specific playlist (press enter for general audio): ")
-    
+
     # open the easygui file picker
     cardPath = easygui.diropenbox()
 
@@ -137,8 +137,8 @@ def makeWaveTablePlaylist():
         "wavelength": 600
     }
     print("\nGenerating Wavetable playlist...\n")
-    
-    #check if you'd like to run the script on subfolders
+
+    # check if you'd like to run the script on subfolders
     addFolders = input("Add folders to playlist? [y/n]: ")
     if addFolders == "y":
         addFolders = True
@@ -150,7 +150,7 @@ def makeWaveTablePlaylist():
     playlist_filename = "playlist-wavetable.txt"
 
     eraseExistingFile(os.path.join(cardPath, playlist_filename))
-    
+
     with open(os.path.join(cardPath, playlist_filename), "a") as f:
         f.write("disting playlist v1")
 
@@ -158,7 +158,7 @@ def makeWaveTablePlaylist():
             f.write("\n")
             for s in sorted(settings):
                 f.write("\n-" + s + "=" + str(settings[s]))
-        
+
         for filename in os.listdir(cardPath):
             if ".wav" in filename and ".txt" not in filename:
                 filelist.append(filename)
