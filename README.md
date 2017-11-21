@@ -36,6 +36,7 @@ Here's a list of valid algorithm codes:
 - I-4 (Audio Playback with Z Speed): ```zspeed```
 - J-4 (Audio Playback with End CV): ```endcv```
 
+**Attention:**  
 When generating a algorithm-specific playlist, the script will only include files that contain the algorithm code at the beggining of their filename followed by an underscore character.  
 For example, if you enter the ```rm``` code, the script will only include files that start with ```rm_```.  
 
