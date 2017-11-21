@@ -14,8 +14,9 @@ scriptSettings = {
 }
 
 validSubCategories = {
-    "audio" : ["rm", "clocked", "voct", "zspeed", "endcv"]
+    "audio": ["rm", "clocked", "voct", "zspeed", "endcv"]
 }
+
 
 def loadSettingsFile():
     global scriptSettings
@@ -41,11 +42,13 @@ def eraseExistingFile(path):
     if os.path.isfile(path):
         open(path, "w").close()
 
+
 def validateSubCategory(string, type):
     if string in validSubCategories[type]:
         return True
     else:
         return False
+
 
 def makeAudioPlaylist():
     filelist = []
@@ -63,8 +66,8 @@ def makeAudioPlaylist():
         "clocks": 16
     }
 
-
     print("\nGenerating Audio playlist...\n")
+
     sub_category = input("Enter suffix for algorithm-specific playlist (press enter for general audio): ")
 
     # validate sub_category
